@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 void main() {
   runApp(MainApp());
@@ -30,6 +31,8 @@ class _MainAppState extends State<MainApp> {
     GlobalKey<_ShoppingItemState>(),
   ];
 
+  final NumberFormat formatter = NumberFormat('#,###');
+
   void _updateTotal(int priceChange) {
     setState(() {
       total += priceChange;
@@ -52,36 +55,37 @@ class _MainAppState extends State<MainApp> {
       home: Scaffold(
         appBar: AppBar(
           title: const Text("Shopping Cart"),
-          backgroundColor: Color(0xFF03a9f4),
+          backgroundColor: const Color.fromARGB(255, 0, 110, 255),
         ),
         body: Column(children: [
           Expanded(
-              child: Column(children: [
-            ShoppingItem(
-              key: itemKeys[0],
-              title: "iPad",
-              price: itemPrices["iPad"]!,
-              onItemCountChanged: _updateTotal,
-            ),
-            ShoppingItem(
-              key: itemKeys[1],
-              title: "iPad Mini",
-              price: itemPrices["iPad Mini"]!,
-              onItemCountChanged: _updateTotal,
-            ),
-            ShoppingItem(
-              key: itemKeys[2],
-              title: "iPad Air",
-              price: itemPrices["iPad Air"]!,
-              onItemCountChanged: _updateTotal,
-            ),
-            ShoppingItem(
-              key: itemKeys[3],
-              title: "iPad Pro",
-              price: itemPrices["iPad Pro"]!,
-              onItemCountChanged: _updateTotal,
-            ),
-          ])),
+            child: Column(children: [
+              ShoppingItem(
+                key: itemKeys[0],
+                title: "iPad",
+                price: itemPrices["iPad"]!,
+                onItemCountChanged: _updateTotal,
+              ),
+              ShoppingItem(
+                key: itemKeys[1],
+                title: "iPad Mini",
+                price: itemPrices["iPad Mini"]!,
+                onItemCountChanged: _updateTotal,
+              ),
+              ShoppingItem(
+                key: itemKeys[2],
+                title: "iPad Air",
+                price: itemPrices["iPad Air"]!,
+                onItemCountChanged: _updateTotal,
+              ),
+              ShoppingItem(
+                key: itemKeys[3],
+                title: "iPad Pro",
+                price: itemPrices["iPad Pro"]!,
+                onItemCountChanged: _updateTotal,
+              ),
+            ]),
+          ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
@@ -90,7 +94,7 @@ class _MainAppState extends State<MainApp> {
                 style: TextStyle(fontSize: 30),
               ),
               Text(
-                total.toString(),
+                formatter.format(total),
                 style: const TextStyle(fontSize: 30),
               ),
               const Text(
@@ -101,7 +105,16 @@ class _MainAppState extends State<MainApp> {
           ),
           ElevatedButton(
             onPressed: _resetTotal,
-            child: const Text("Clear"),
+            style: ElevatedButton.styleFrom(
+              padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 15),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(20), // Rounded corners
+              ),
+            ),
+            child: const Text(
+              "Clear",
+              style: TextStyle(fontSize: 20),
+            ),
           ),
           const SizedBox(
             height: 10,
@@ -130,6 +143,7 @@ class ShoppingItem extends StatefulWidget {
 
 class _ShoppingItemState extends State<ShoppingItem> {
   int count = 0;
+  final NumberFormat formatter = NumberFormat('#,###');
 
   void _incrementCount() {
     setState(() {
@@ -167,7 +181,7 @@ class _ShoppingItemState extends State<ShoppingItem> {
                 widget.title,
                 style: const TextStyle(fontSize: 28),
               ),
-              Text("${widget.price}฿"),
+              Text("${formatter.format(widget.price)}฿"),
             ],
           ),
         ),
